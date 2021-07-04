@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { Component } from "react";
 
 import Waveform from "./Waveform";
-
+import './App.css'
 import Button from "./components/Button";
 import musicfile from './assest/sample.mp3';
 class App extends Component {
@@ -69,9 +69,11 @@ class App extends Component {
       return <Waveform />;
     } else {
       return (
-        <div>
-          <h3>Select and audio file!</h3>
-          <Button type='submit' onClick={this.onFileUpload}>Upload!</Button>
+        <div >
+          <Button type='submit'
+            onClick={this.onFileUpload}
+            style={{ alignItems: 'center', justifyContent: 'center' }}
+          >Upload!</Button>
         </div>
       );
     }

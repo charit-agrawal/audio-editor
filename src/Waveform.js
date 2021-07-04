@@ -5,6 +5,11 @@ import { faPlay, faPause, faReply, faToggleOff, faToggleOn } from "@fortawesome/
 import { WaveformContianer, Wave, ButtonContianer } from './Waveform.styled';
 import { Slider } from '@material-ui/core';
 import Vol from '../src/components/Volume';
+import Toggle from '../src/components/Toggle';
+
+const Checked = () => <>🤪</>;
+const UnChecked = () => <>🙂</>;
+
 class Waveform extends Component {
     state = {
         playing: false,
@@ -22,18 +27,7 @@ class Waveform extends Component {
 
         this.Waveform = wavesurfer;
         wavesurfer.load(track);
-        wavesurfer.setVolume(0.4);
-        document.querySelector('#volume').value = wavesurfer.backend.getVolume();
     };
-
-    voulumeSelector = () => {
-        document.querySelector('#volume');
-    }
-
-    onChangeVolume = (e) => {
-        this.Waveform.setVolume(e.target.value);
-        console.log(e.target.value);
-    }
 
     handleReplay = () => {
         this.Waveform.setCurrentTime(0);
@@ -41,20 +35,15 @@ class Waveform extends Component {
         this.Waveform.playPause();
     }
 
-    // volumeChangeHandler = (e) => {
-    //     this.Waveform.setVolume(e.target.value);
-    //     console.log(e.target.value);
-    // }
-
     handlePlay = () => {
         this.setState({ playing: !this.state.playing });
         this.Waveform.playPause();
     };
 
-    handleToggle = () => {
-        this.setState({ toggle: !this.state.toggle });
-        this.Waveform.toggleInteraction();
-    }
+    onChangeVolume = function (e) {
+        this.wavesurfer.setVolume(e.target.value);
+
+    };
 
     render() {
         const url = 'https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3';
@@ -67,11 +56,14 @@ class Waveform extends Component {
                     <p style={{ margin: 50 }}>Please wait for 10 seconds before clicking the play button at the initial render</p>
                 </WaveformContianer>
                 <ButtonContianer>
-                    <button onClick={this.handleToggle} style={{ outline: 'none' }}>
+                    {/* <button onClick={this.handleToggle} style={{ outline: 'none' }}>
                         <FontAwesomeIcon icon={!this.state.toggle ? faToggleOn : faToggleOff} >
                             {this.state.toggle ? "Customer" : "Agent"}
                         </FontAwesomeIcon>
-                    </button>
+                    </button> */}
+
+                    {/* <Toggle style={{ marginLeft: 100 }}
+                    /> */}
 
                     <button onClick={this.handlePlay} style={{ outline: 'none' }}>
                         <FontAwesomeIcon icon={!this.state.playing ? faPlay : faPause} />
@@ -79,7 +71,7 @@ class Waveform extends Component {
                     <button onClick={this.handleReplay} style={{ outline: 'none' }}>
                         <FontAwesomeIcon icon={faReply} />
                     </button>
-                    <Vol />
+                    <input type="range" min="0" max="10" name="txt" value="0" step="1" onchange={this.onChangeVolume(1)} />
                     <button style={{ width: 150, margin: 30, background: 'transparent', border: 'none' }}>
                         <Slider />
                     </button>
