@@ -1,25 +1,81 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+
+import Waveform from "./Waveform";
+
+import Button from "./components/Button";
+import musicfile from './assest/sample.mp3';
+class App extends Component {
+  state = {
+    selectedFile: musicfile,
+    redirect: null
+  };
+
+  onFileChange = (event) => {
+    this.setState({ selectedFile: event.target.files[0] });
+  };
+
+  onFileUpload = () => {
+    // const formData = new FormData();
+
+    // formData.append(
+    //   "myFile",
+    //   this.state.selectedFile,
+    //   this.state.selectedFile.name
+    // );
+    const audioFile = this.state.selectedFile;
+
+    console.log(this.state.selectedFile);
+
+    axios.post("https://localhost:5000/uploadfile", audioFile);
+    console.log("Uploaded !!!!");
+    this.setState({ redirect: true });
+  };
+
+  fileData = () => {
+    if (this.state.selectedFile) {
+      var filetype = this.state.selectedFile.type;
+      if (filetype.slice(0, 5) === "audio") {
+        return (
+          <div>
+            <h2>File Details:</h2>
+            <p>Type of : {typeof this.state.selectedFile.type}</p>
+            <p>File Name: {this.state.selectedFile.name}</p>
+
+            <p>File Type: {this.state.selectedFile.type}</p>
+
+            <p>
+              Last Modified:{" "}
+              {this.state.selectedFile.lastModifiedDate.toDateString()}
+            </p>
+          </div>
+        );
+      } else {
+        return <p> Please give an audio file !!!</p>;
+      }
+    } else {
+      return (
+        <div>
+          <br />
+          <h4>Choose file before pressing the Upload button</h4>
+        </div>
+      );
+    }
+  };
+
+  render() {
+    if (this.state.redirect) {
+      return <Waveform />;
+    } else {
+      return (
+        <div>
+          <h3>Select and audio file!</h3>
+          <Button type='submit' onClick={this.onFileUpload}>Upload!</Button>
+        </div>
+      );
+    }
+  }
 }
 
 export default App;
