@@ -45,13 +45,13 @@ const ToggleButton = (props) => {
     }, className);
 
     return (
-        <div onClick={triggerToggle} className={toggleClasses}>
+        <div onClick={triggerToggle} className={toggleClasses} style={{ marginRight: 20 }}>
             <div className="wrg-toggle-container">
                 <div className="wrg-toggle-check">
-                    <span><p style={{ font: '2px', background: "black" }}>"Customer"</p></span>
+                    <span style={{ fontSize: "7px", fontWeight: "bold", color: "white" }}><p>Cust.</p></span>
                 </div>
                 <div className="wrg-toggle-uncheck">
-                    <span>{getIcon('unchecked')}</span>
+                    <span><p style={{ fontSize: "8px", fontWeight: "bold", color: "white" }}>Agent</p></span>
                 </div>
             </div>
             <div className="wrg-toggle-circle"></div>

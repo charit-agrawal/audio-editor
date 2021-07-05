@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faReply, faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faReply, fas, fa } from "@fortawesome/free-solid-svg-icons";
 import { WaveformContianer, Wave, ButtonContianer } from './Waveform.styled';
-import { Slider } from '@material-ui/core';
-import Vol from '../src/components/Volume';
 import Toggle from '../src/components/Toggle';
-
-const Checked = () => <>🤪</>;
-const UnChecked = () => <>🙂</>;
+import Timeline from './components/Timeline';
 
 class Waveform extends Component {
     state = {
@@ -22,17 +18,19 @@ class Waveform extends Component {
         var wavesurfer = WaveSurfer.create({
             container: '#waveform',
             waveColor: '#D2EDD4',
-            progressColor: '#46B54D'
+            progressColor: '#46B54D',
+            backend: "MediaElement",
         });
 
         this.Waveform = wavesurfer;
         wavesurfer.load(track);
+
     };
 
     handleReplay = () => {
         this.Waveform.setCurrentTime(0);
         this.setState({ playing: false });
-        this.Waveform.playPause();
+        this.Waveform.pause();
     }
 
     handlePlay = () => {
@@ -51,30 +49,73 @@ class Waveform extends Component {
         return (
             <>
                 <WaveformContianer style={{ margin: 50 }}>
+
+                    {/*Displaying the waveform*/}
                     <Wave id="waveform" style={{ width: "100%" }} />
+
+                    {/*Timeline (Not working correctly at the moment)*/}
+                    {/* <Timeline wavesurfer={this.Waveform} isReady={true} /> */}
+
+                    {/*Loading the audio using the audio tag*/}
                     <audio id="track" src={url} />
+
                     <p style={{ margin: 50 }}>Please wait for 10 seconds before clicking the play button at the initial render</p>
+
                 </WaveformContianer>
+
                 <ButtonContianer>
-                    {/* <button onClick={this.handleToggle} style={{ outline: 'none' }}>
-                        <FontAwesomeIcon icon={!this.state.toggle ? faToggleOn : faToggleOff} >
-                            {this.state.toggle ? "Customer" : "Agent"}
-                        </FontAwesomeIcon>
-                    </button> */}
 
-                    {/* <Toggle style={{ marginLeft: 100 }}
-                    /> */}
+                    {/*Custom toggle button for agent and customer*/}
+                    <Toggle style={{ marginLeft: 100 }} />
 
-                    <button onClick={this.handlePlay} style={{ outline: 'none' }}>
-                        <FontAwesomeIcon icon={!this.state.playing ? faPlay : faPause} />
+                    {/*Play and pause button*/}
+                    <button onClick={this.handlePlay} style={
+                        !this.state.playing ?
+                            {
+                                outline: 'none',
+                                height: "20px",
+                                width: "20px",
+                                borderStyle: "solid",
+                                borderWidth: "10px 0px 10px 20px",
+                                borderColor: "transparent transparent transparent #202020",
+                                margin: "20px",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                willChange: "borderWidth",
+                                transition: "100ms all ease"
+                            } : {
+                                height: "20px",
+                                width: "20px",
+                                borderStyle: "double",
+                                borderWidth: "0px 0px 0px 20px",
+                                borderColor: "#202020",
+                                margin: "20px",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                willChange: "borderWidth",
+                                transition: "100ms all ease"
+                            }}>
+
+                        {/* <FontAwesomeIcon icon={!this.state.playing ? faPlay : faPause} /> */}
+
                     </button>
-                    <button onClick={this.handleReplay} style={{ outline: 'none' }}>
+
+                    {/*Replay button*/}
+                    <button onClick={this.handleReplay} style={{
+                        outline: 'none',
+                        backgroundColor: 'transparent',
+                        borderColor: "transparent",
+                        cursor: 'pointer',
+                        width: '20px',
+                        height: '20px',
+                        fontSize: '20px',
+                        marginBottom: '10px'
+                    }}>
+
                         <FontAwesomeIcon icon={faReply} />
+
                     </button>
-                    <input type="range" min="0" max="10" name="txt" value="0" step="1" onchange={this.onChangeVolume(1)} />
-                    <button style={{ width: 150, margin: 30, background: 'transparent', border: 'none' }}>
-                        <Slider />
-                    </button>
+
                 </ButtonContianer>
 
             </>
